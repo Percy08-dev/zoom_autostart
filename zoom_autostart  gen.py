@@ -17,6 +17,7 @@ fin = 18*60
 def period():
     r = -1
     now = datetime.datetime.now()
+    print(now)
     t = now.hour * 60 + now.minute
     if fin <= t:
         #sys.exit()
@@ -43,17 +44,9 @@ date = now
 
 #曜日 day of the week = dw
 dw = date.weekday()
+dw_list = ["月","火","水","木","金","土","日"]
 
 #時間割
-sun = {
-    0:0,
-    1:0, 
-    2:0,
-    3:0,
-    4:0,
-    -1:"終了",
-}
-
 mon = {
     0:0,
     1:0,
@@ -108,22 +101,36 @@ sat = {
     -1:"終了",
 }
 
+sun = {
+    0:0,
+    1:0, 
+    2:0,
+    3:0,
+    4:0,
+    -1:"終了",
+}
+
+
 #曜日ごとの予定を辞書型で定義
-schedule = {0:sun,1:mon,2:tue,3:wed,4:thu,5:fri,6:sat}
+schedule = {0:mon, 1:tue, 2:wed, 3:thu, 4:fri, 5:sat, 6:sun}
 
 
 
 #main
 x=0
 cnt = -1
+s = int(now.second)
 while x == 0:
     p = period()
     today_s = schedule[dw]
     if p != -1:
         if cnt != p:
             url = today_s[p]
-            webbrowser.open(url)
             cnt = p
-    print(p)
-    time.sleep(60)
-    
+            if url == 0:
+                continue
+            print("接続")
+            print("%s曜日 %d限", %(dw_list[dw], p))
+            webbrowser.open(url)
+    time.sleep(60 - s)
+    s = 0
